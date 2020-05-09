@@ -1,0 +1,77 @@
+#! /usr/bin/env racket
+#lang racket
+
+; CHAPTERS 1 + 2
+
+(define (extract str)
+  (substring str 4 7))
+(define (bake str)
+  (printf "preheating oven...\n")
+  (string-append str " pie"))
+(define (reply s)
+  (if (and (string? s)
+           (>= (string-length s) 5)
+           (equal? "hello" (substring s 0 5)))
+      "hi"
+      "huh"))
+(define (reply-more s)
+  (cond
+    [(equal? "hello" (substring s 0 5))
+     "hi!"]
+    [(equal? "goodbye" (substring s 0 7))
+     "bye!"]
+    [(equal? "?" (substring s (- (string-length s) 1)))
+     "I don't know"]
+    [else "huh?"]))
+(define (double v)
+  ((if (string? v) string-append +) v v))
+(define (twice f v)
+  (f (f v)))
+(define (make-add-suffix s2)
+  (lambda (s) (string-append s s2)))
+(define louder (make-add-suffix "!"))
+(define less-sure (make-add-suffix "...?"))
+(let* ([x (random 4)]
+       [o (random 4)]
+       [diff (number->string (abs (- x o)))])
+       (cond
+         [(> x o) (string-append "X wins by " diff)]
+         [(> o x) (string-append "O wins by " diff)]
+         [else "cat's game"]))
+(define (my-map f lst)
+  (cond
+    [(empty? lst) empty]
+    [else (cons (f (first lst))
+                 (my-map f (rest lst)))]))
+(define (my-length lst)
+  ; local function iter
+  (define (iter lst len)
+    (cond
+      [(empty? lst) len]
+      [else (iter (rest lst) (+ len 1))]))
+  (iter lst 0))
+
+; CHAPTERS 3 + 4
+(define (demo)
+  (map
+   (lambda (lst)
+     (list (car lst)
+           (cdr lst)
+           '==>
+           (apply (eval (car lst)) (cdr lst))))
+           examples))
+
+(define examples
+        '("odd? 1"
+        "integer? 33.4"))
+
+(define (last-digit x)
+    (remainder x 10))
+
+(require racket/trace)
+
+(define (factorial n)
+  (if (= n 1)
+      1
+      (* n (factorial (- n 1)))
+      ))

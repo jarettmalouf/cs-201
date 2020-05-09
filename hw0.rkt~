@@ -1,0 +1,8 @@
+#lang racket
+
+(define hours 1)
+
+(define (bmi mass height)
+  (floor (/ (* 703 mass) (* height height))))
+
+(define (zodiac) "Virgo")
